@@ -4,54 +4,80 @@ package collection;
  * A class to represent an expression tree
  * @author Johnathan Tripp (╯°□°）╯︵ ┻━┻
  */
-public class MyExpressionTree extends MyBinaryTree{
+public class MyExpressionTrees extends MyBinaryTree {
+
+        
     
-    /**
-     * Default constructor for the expression tree
-     */
-    public MyExpressionTree(){
+
+    public int MyExpressionTrees() {
         root = null;
+        return -99999;
     }
-    
-    /**
-     * Constructor for the expression tree given a root node
-     * @param rt 
-     */
-    public MyExpressionTree(MyBinaryTreeNode rt){
+
+    public MyExpressionTrees(MyBinaryTreeNode rt) {
         root = rt;
     }
-    
-    /**
-     * Evaluates the expression tree
-     * @return the result of evaluating the expression tree
-     */
-    public int evaluate(){
-        if(root == null) return -1000000;
-        return evaluateHelper(root);
+
+    public static int evaluate(MyBinaryTreeNode rt) {
+        if (rt == null) {
+            return -99999;
+        }
+        if (rt.left == null && rt.right == null) {
+            return Character.getNumericValue((Character) rt.data);
+        }
+        switch ((Character) rt.data) {
+            case '+':
+                return evaluate(rt.left) + evaluate(rt.right);
+            case '-':
+                return evaluate(rt.left) - evaluate(rt.right);
+            case '*':
+                return evaluate(rt.left) * evaluate(rt.right);
+            case '/':
+                return evaluate(rt.left) / evaluate(rt.right);
+            case '%':
+                return evaluate(rt.left) % evaluate(rt.right);
+        }
+        return -99999;
     }
-    
-    /**
-     * Recursive method to assist in the evaluation of the expression tree
-     * @param rt the node for each recursive call
-     * @return an integer value
-     */
-    private int evaluateHelper(MyBinaryTreeNode rt){
-        if(rt.left == null){
-            return Integer.parseInt(rt.data.toString());
+
+    @Override
+    public String preorderTraversal() {
+        return preorderHelper(root) + "\n";
+    }
+
+    private String preorderHelper(MyBinaryTreeNode rt) {
+        if (rt == null) {
+            return "";
         }
-        switch(rt.data.toString()){
-            case "+":
-                return evaluateHelper(rt.left) + evaluateHelper(rt.right);
-            case "-":
-                return evaluateHelper(rt.left) - evaluateHelper(rt.right);
-            case "/":
-                return evaluateHelper(rt.left) / evaluateHelper(rt.right);
-            case "*":
-                return evaluateHelper(rt.left) * evaluateHelper(rt.right);
-            case "%":
-                return evaluateHelper(rt.left) % evaluateHelper(rt.right);
-            default:
-                return -1000000;
+        return rt.data + " " + preorderHelper(rt.left) + " " + preorderHelper(rt.right);
+    }
+
+    @Override
+    public String inorderTraversal() {
+        return inorderHelper(root) + "\n";
+    }
+
+    private String inorderHelper(MyBinaryTreeNode rt) {
+        if (rt == null) {
+            return "";
         }
+        return inorderHelper(rt.left) + " " + rt.data + " " + inorderHelper(rt.right);
+    }
+
+    @Override
+    public String postorderTraversal() {
+        return postorderHelper(root) + "\n";
+    }
+
+    private String postorderHelper(MyBinaryTreeNode rt) {
+        if (rt == null) {
+            return "";
+        }
+        return postorderHelper(rt.left) + " " + postorderHelper(rt.right) + " " + rt.data;
     }
 }
+
+
+
+
+
